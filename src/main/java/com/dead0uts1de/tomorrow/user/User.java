@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "application_user") // name "user" is reserved and cannot be used for the table
 public class User {
     @Id
     @SequenceGenerator(
