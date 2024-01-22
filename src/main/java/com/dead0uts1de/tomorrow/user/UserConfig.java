@@ -12,7 +12,8 @@ public class UserConfig {
     CommandLineRunner commandLineRunner(UserRepository repository) { // this is used to automatically create a user on application startup
         return args -> {
             User geralt = new User("Geralt", "geralt@mail.com");
-            repository.saveAll(List.of(geralt));
+            User lambert = new User("Lambert", "lambert@mail.com");
+            repository.saveAll(List.of(geralt, lambert));
         };
     }
 }
