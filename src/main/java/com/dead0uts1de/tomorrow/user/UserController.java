@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "api/v1/users")
 public class UserController {
@@ -20,5 +22,9 @@ public class UserController {
     @GetMapping(path = "/{userId}")
     public User getUserById(@PathVariable("userId") Long id) {
         return this.userService.getUserById(id);
+    }
+
+    public List<User> getUsers() {
+        return this.userService.getUsers();
     }
 }
