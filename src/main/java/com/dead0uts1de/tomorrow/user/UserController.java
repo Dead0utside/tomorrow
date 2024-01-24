@@ -24,6 +24,7 @@ public class UserController {
         return this.userService.getUserById(id);
     }
 
+    @GetMapping
     public List<User> getUsers() {
         return this.userService.getUsers();
     }
