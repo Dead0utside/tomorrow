@@ -14,12 +14,21 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    // requests here
+
     public User getUserById(Long id) {
-        return this.userRepository.findById(id).orElseThrow(); // create custom exception
+        return this.userRepository.findById(id).orElseThrow(); // TODO create custom exception
     }
 
     public List<User> getUsers() {
         return this.userRepository.findAll();
     }
-    // requests here
+
+    public void addUser(User user) {
+        if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalStateException("this email is already used by another user");
+        }
+
+        this.userRepository.save(user);
+    }
 }
