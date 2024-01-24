@@ -13,6 +13,7 @@ public class UserConfig {
         return args -> {
             User geralt = new User("Geralt", "geralt@mail.com");
             User lambert = new User("Lambert", "lambert@mail.com");
+            User eskel = new User("Eskel", "eskel@mail.com");
             repository.saveAll(List.of(geralt, lambert));
         };
     }
