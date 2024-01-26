@@ -9,7 +9,7 @@ import java.util.List;
 @Configuration
 public class UserConfig {
     @Bean
-    CommandLineRunner commandLineRunner(UserRepository repository) { // this is used to automatically create a user on application startup
+    CommandLineRunner UserConfigurationCLR (UserRepository repository) { // this is used to automatically create a user on application startup
         return args -> {
             User geralt = new User("Geralt", "geralt@mail.com");
             User lambert = new User("Lambert", "lambert@mail.com");
