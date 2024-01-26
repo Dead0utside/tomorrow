@@ -2,8 +2,6 @@ package com.dead0uts1de.tomorrow.task;
 
 import com.dead0uts1de.tomorrow.user.User;
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
-import org.springframework.context.annotation.Primary;
 
 import java.time.LocalDate;
 import java.util.Date;
