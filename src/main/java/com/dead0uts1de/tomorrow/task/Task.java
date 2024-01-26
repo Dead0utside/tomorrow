@@ -1,12 +1,26 @@
 package com.dead0uts1de.tomorrow.task;
 
 import com.dead0uts1de.tomorrow.user.User;
+import jakarta.persistence.*;
 import org.springframework.cglib.core.Local;
+import org.springframework.context.annotation.Primary;
 
 import java.time.LocalDate;
 import java.util.Date;
 
+@Entity
+@Table(name = "task")
 public class Task {
+    @Id
+    @SequenceGenerator(
+            name = "task_sequence",
+            sequenceName = "task_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "task_sequence"
+    )
     private Long id;
     private String name;
     private String description;
@@ -25,6 +39,11 @@ public class Task {
         this.creationDate = creationDate;
         this.type = type;
         this.deadline = deadline;
+    }
+
+    public Task(String name, LocalDate creationDate) {
+        this.name = name;
+        this.creationDate = creationDate;
     }
 
     public Long getId() {
