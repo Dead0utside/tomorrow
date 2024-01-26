@@ -44,4 +44,8 @@ public class User {
     public String getEmail() {
         return email;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -16,7 +16,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(path = "/{userId}")
+    @GetMapping(path = "{userId}")
     public User getUserById(@PathVariable("userId") Long id) {
         return this.userService.getUserById(id);
     }
@@ -31,8 +31,13 @@ public class UserController {
         this.userService.addUser(user);
     }
 
-    @DeleteMapping(path = "/{userId}")
+    @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable Long userId) {
         this.userService.deleteUser(userId);
+    }
+
+    @PutMapping(path = "{userId}")
+    public void changeName(@PathVariable("userId") Long userId, @RequestBody String newName) { // the request body looks kinda weird now. Maybe I should just use @RequestParam instead of @RequestBody
+        this.userService.changeName(userId, newName);
     }
 }
