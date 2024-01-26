@@ -18,7 +18,7 @@ public class UserService {
     // requests here
 
     public User getUserById(Long id) {
-        return this.userRepository.findById(id).orElseThrow(); // TODO create custom exception
+        return this.userRepository.findById(id).orElseThrow(() -> new IllegalStateException("user with id " + id + " not found")); // TODO create custom exception
     }
 
     public List<User> getUsers() {
