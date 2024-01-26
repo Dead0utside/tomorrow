@@ -1,7 +1,6 @@
 package com.dead0uts1de.tomorrow.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

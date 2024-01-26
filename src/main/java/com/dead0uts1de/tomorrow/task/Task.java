@@ -4,7 +4,6 @@ import com.dead0uts1de.tomorrow.user.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "task")
