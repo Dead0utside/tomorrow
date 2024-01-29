@@ -22,7 +22,7 @@ public class Task {
     private String name;
     private String description;
     private LocalDate creationDate;
-    private TaskType type;
+//    private TaskType type;
     private LocalDate deadline;
     // TODO establish a many-to-one relation between tasks and user
 //    private User user;
@@ -30,12 +30,16 @@ public class Task {
     public Task() { // do I need an empty constructor?
     }
 
-    public Task(String name, String description, LocalDate creationDate, TaskType type, LocalDate deadline) {
+    public Task(String name, String description, LocalDate deadline) {
         this.name = name;
         this.description = description;
-        this.creationDate = creationDate;
-        this.type = type;
+        this.creationDate = LocalDate.now();
         this.deadline = deadline;
+    }
+
+    public Task(String name) {
+        this.name = name;
+        this.creationDate = LocalDate.now();
     }
 
     public Task(String name, LocalDate creationDate) {
@@ -59,11 +63,15 @@ public class Task {
         return creationDate;
     }
 
-    public TaskType getType() {
-        return type;
-    }
+//    public TaskType getType() {
+//        return type;
+//    }
 
     public LocalDate getDeadline() {
         return deadline;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
     }
 }
