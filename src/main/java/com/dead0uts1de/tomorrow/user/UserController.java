@@ -39,4 +39,6 @@ public class UserController {
     public void changeName(@PathVariable("userId") Long userId, @RequestBody String newName) { // the request body looks kinda weird now. Maybe I should just use @RequestParam instead of @RequestBody
         this.userService.changeName(userId, newName);
     }
+
+    // TODO assign the created task to user (probably not here but anyway)
 }

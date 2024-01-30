@@ -25,6 +25,7 @@ public class TaskService {
         return this.taskRepository.findAll();
     }
 
+    // TODO assign the created task to user
     public void createTask(Task task) {
         // TODO create some business logic if required
         // for some reason the creation date is not set automatically to NOW via the constructor
@@ -37,4 +38,10 @@ public class TaskService {
     public void deleteTask(Long id) {
         this.taskRepository.deleteById(id);
     }
+
+    // TODO create a smart way to modify the Task
+//    public void changeTask(Long id, Task modifiedTask) {
+//        Task oldTask = taskRepository.findById(id).orElseThrow(() -> new IllegalStateException("task with id " + id + " does not exist"));
+//        taskRepository.
+//    }
 }

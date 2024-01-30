@@ -18,14 +18,24 @@ public class Task {
             strategy = GenerationType.SEQUENCE,
             generator = "task_sequence"
     )
+    @Column(name = "id", updatable = false)
     private Long id;
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "description")
     private String description;
+    @Column(name = "creation_date")
     private LocalDate creationDate;
 //    private TaskType type;
     private LocalDate deadline;
-    // TODO establish a many-to-one relation between tasks and user
-//    private User user;
+    @ManyToOne
+    @JoinColumn(
+            name = "application_user_id",
+//            nullable = false,
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "user_task_fk")
+    )
+    private User user;
 
     public Task() { // do I need an empty constructor?
     }

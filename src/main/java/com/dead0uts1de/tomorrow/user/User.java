@@ -3,6 +3,7 @@ package com.dead0uts1de.tomorrow.user;
 import com.dead0uts1de.tomorrow.task.Task;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,11 +19,19 @@ public class User {
             strategy = GenerationType.SEQUENCE,
             generator = "user_sequence"
     )
+    @Column(name = "id", updatable = false)
     private Long id;
+    @Column(name = "name", nullable = false, columnDefinition = "TEXT")
     private String name;
+    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
     private String email;
-    // TODO create a one-to-many relation table, containing task list for every user
-//    private List<Task> tasks;
+    @OneToMany(
+            mappedBy = "user",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.LAZY
+    )
+    private List<Task> tasks = new ArrayList<>();
 
 
     public User() { // do I actually need it?
