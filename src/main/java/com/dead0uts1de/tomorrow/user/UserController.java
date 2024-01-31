@@ -1,5 +1,6 @@
 package com.dead0uts1de.tomorrow.user;
 
+import com.dead0uts1de.tomorrow.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,11 @@ public class UserController {
     public void changeName(@PathVariable("userId") Long userId, @RequestBody String newName) { // the request body looks kinda weird now. Maybe I should just use @RequestParam instead of @RequestBody
         this.userService.changeName(userId, newName);
     }
+
+//    @PutMapping(path = "{userId}")
+//    public void addTasks(@PathVariable("userId") Long userId, @RequestBody List<Task> tasks) {
+//        this.userService.addTasks(userId, tasks);
+//    }
 
     // TODO assign the created task to user (probably not here but anyway)
 }

@@ -84,4 +84,8 @@ public class Task {
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

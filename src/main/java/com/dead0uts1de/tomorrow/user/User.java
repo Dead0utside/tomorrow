@@ -57,4 +57,19 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
+    // Now this is probably not the smartest way to connect Tasks with Users.
+    // I will have to revisit this issue once security is implemented.
+    // It might be possible to get the currently authorised user out of the context
+    public void addTask(Task task) {
+        if (!this.tasks.contains(task)) {
+            this.tasks.add(task);
+            task.setUser(this);
+        }
+    }
+
+    public void removeTask(Task task) {
+        this.tasks.remove(task);
+        task.setUser(null);
+    }
 }

@@ -1,5 +1,6 @@
 package com.dead0uts1de.tomorrow.user;
 
+import com.dead0uts1de.tomorrow.task.Task;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,5 +44,13 @@ public class UserService {
 
 //        user.setName(newName.getName()); // this feels wrong but passing new name as a JSON object is OP
         user.setName(newName);
+    }
+
+    @Transactional
+    public void addTasks(Long userId, List<Task> tasks) {
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id " + userId + " does not exist"));
+        for (Task task : tasks) {
+            user.addTask(task);
+        }
     }
 }
