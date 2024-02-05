@@ -1,6 +1,9 @@
-package com.dead0uts1de.tomorrow.task;
+package com.dead0uts1de.tomorrow;
 
-import com.dead0uts1de.tomorrow.user.UserController;
+import com.dead0uts1de.tomorrow.task.Task;
+import com.dead0uts1de.tomorrow.task.TaskRepository;
+import com.dead0uts1de.tomorrow.user.User;
+import com.dead0uts1de.tomorrow.user.UserRepository;
 import com.dead0uts1de.tomorrow.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -10,10 +13,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Configuration
-public class TaskConfig {
+public class TestData {
     @Bean
-    CommandLineRunner TaskConfigurationCLR (TaskRepository taskRepository, UserService userService) {
+    CommandLineRunner UserConfigurationCLR (UserRepository repository, TaskRepository taskRepository, UserService userService) { // this is used to automatically create a user on application startup
         return args -> {
+            User geralt = new User("Geralt", "geralt@mail.com");
+            User lambert = new User("Lambert", "lambert@mail.com");
+            User eskel = new User("Eskel", "eskel@mail.com");
+            repository.saveAll(List.of(geralt, lambert, eskel));
+
             Task firstTask = new Task("Conquer the world", LocalDate.now().minusYears(10));
             Task secondTask = new Task("Learn all languages", LocalDate.now().minusYears(12));
             Task thirdTask = new Task("Complete latest contract", LocalDate.now().minusDays(3));

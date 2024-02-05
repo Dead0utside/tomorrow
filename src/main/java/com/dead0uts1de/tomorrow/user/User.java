@@ -2,13 +2,21 @@ package com.dead0uts1de.tomorrow.user;
 
 import com.dead0uts1de.tomorrow.task.Task;
 import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "application_user") // name "user" is reserved and cannot be used for the table
-public class User {
+public class User implements UserDetails {
     @Id
     @SequenceGenerator(
             name = "user_sequence",
@@ -20,11 +28,15 @@ public class User {
             generator = "user_sequence"
     )
     @Column(name = "id", updatable = false)
+    @Getter
     private Long id;
     @Column(name = "name", nullable = false, columnDefinition = "TEXT")
+    @Getter
     private String name;
     @Column(name = "email", nullable = false, columnDefinition = "TEXT")
+    @Getter
     private String email;
+    private String password;
     @OneToMany(
             mappedBy = "user",
             orphanRemoval = true,
@@ -33,25 +45,9 @@ public class User {
     )
     private List<Task> tasks = new ArrayList<>();
 
-
-    public User() { // do I actually need it?
-    }
-
     public User(String name, String email) {
         this.name = name;
         this.email = email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public void setName(String name) {
@@ -71,5 +67,40 @@ public class User {
     public void removeTask(Task task) {
         this.tasks.remove(task);
         task.setUser(null);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null; // TODO I'll figure this out later if needed
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email; // in context of UserDetails username is email
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // TODO implement account expiration (not sure I need this in the context of this project)
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // TODO implement account locking (not sure I need this in the context of this project)
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // TODO implement credentials expiration (not sure I need this in the context of this project)
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true; // TODO implement account enabling/disabling
     }
 }
