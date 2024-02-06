@@ -14,12 +14,12 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     // TODO try using voids instead of ResponseEntity
-    @PostMapping("/register")
+    @PostMapping("register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest) {
         return ResponseEntity.ok(authenticationService.register(registerRequest));
     }
 
-    @PostMapping("/sign-in")
+    @PostMapping("sign-in")
     public ResponseEntity<AuthenticationResponse> signIn(@RequestBody AuthenticationRequest authenticationRequest) {
         return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
     }
