@@ -30,8 +30,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
 //                        .requestMatchers("**")
 //                        .permitAll()
-                        .requestMatchers(HttpMethod.GET, "index.html")
-                        .permitAll()
                         .requestMatchers("/api/v1/auth/**")// TODO this (or some other) shit blocks all requests for some reason
                         .permitAll()
 //                        .anyRequest()
@@ -41,6 +39,9 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(this.authenticationProvider)
+                .formLogin(login -> login
+                        .defaultSuccessUrl("/index.html")
+                )
                 .addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
