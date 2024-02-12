@@ -1,6 +1,5 @@
 package com.dead0uts1de.tomorrow.user;
 
-import com.dead0uts1de.tomorrow.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ public class UserController {
 
     @PostMapping
     public void addUser(@RequestBody User user) {
-        this.userService.addUser(user);
+        this.userService.signUpUser(user);
     }
 
     @DeleteMapping(path = "{userId}")

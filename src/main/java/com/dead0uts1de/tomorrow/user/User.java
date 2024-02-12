@@ -4,10 +4,12 @@ import com.dead0uts1de.tomorrow.task.Task;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -17,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "application_user") // name "user" is reserved and cannot be used for the table
 public class User implements UserDetails {
+    // TODO make spring data jpa ignore password, locked and enabled attributes (if possible)
     @Id
     @SequenceGenerator(
             name = "user_sequence",
@@ -30,13 +33,19 @@ public class User implements UserDetails {
     @Column(name = "id", updatable = false)
     @Getter
     private Long id;
-    @Column(name = "name", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "name", nullable = false)
     @Getter
+    @Setter
     private String name;
-    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "email", nullable = false)
     @Getter
     private String email;
+    @Column(name = "password", nullable = false)
     private String password;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+    private Boolean locked;
+    private Boolean enabled;
     @OneToMany(
             mappedBy = "user",
             orphanRemoval = true,
@@ -45,13 +54,13 @@ public class User implements UserDetails {
     )
     private List<Task> tasks = new ArrayList<>();
 
-    public User(String name, String email) {
+    public User(String name, String email, String password, UserRole userRole) {
         this.name = name;
         this.email = email;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.password = password;
+        this.userRole = userRole;
+        this.locked = false;
+        this.enabled = false;
     }
 
     // Now this is probably not the smartest way to connect Tasks with Users.
@@ -71,7 +80,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null; // TODO I'll figure this out later if needed
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
+        return Collections.singleton(authority); // TODO I'll figure this out later if needed
     }
 
     @Override
@@ -91,7 +101,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // TODO implement account locking (not sure I need this in the context of this project)
+        return !this.locked; // TODO implement account locking (not sure I need this in the context of this project)
     }
 
     @Override
@@ -101,6 +111,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true; // TODO implement account enabling/disabling
+        return this.enabled; // TODO implement account enabling/disabling
     }
 }
