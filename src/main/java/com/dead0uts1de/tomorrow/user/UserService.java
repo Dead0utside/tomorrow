@@ -1,5 +1,7 @@
 package com.dead0uts1de.tomorrow.user;
 
+import com.dead0uts1de.tomorrow.registration.token.ConfirmationToken;
+import com.dead0uts1de.tomorrow.registration.token.ConfirmationTokenService;
 import com.dead0uts1de.tomorrow.task.Task;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +22,7 @@ public class UserService implements UserDetailsService {
 //    private final static String USER_NOT_FOUND_MSG = "user with this email does not exist";
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final ConfirmationTokenService confirmationTokenService;
 
 
     // requests here
@@ -32,18 +37,19 @@ public class UserService implements UserDetailsService {
 
     public String signUpUser(User user) {
         if (this.userRepository.findUserByEmail(user.getEmail()).isPresent()) {
+            // TODO if email is not confirmed send another confirmation email
             throw new IllegalStateException("email already in use");
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        user.setEnabled(true); // TODO move this line to when the email is confirmed when possible, also there is enableUser() method for this
-
-        // TODO send confirmation per email
-
         this.userRepository.save(user);
 
-        return "success";
+        ConfirmationToken confirmationToken = new ConfirmationToken(UUID.randomUUID().toString(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
+        enableUser(user.getEmail());
+        confirmationToken.setConfirmedAt(LocalDateTime.now()); // TODO remove this line when activation per email is implemented
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+        return confirmationToken.getToken();
     }
 
     public void enableUser(String email) {
