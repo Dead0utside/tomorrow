@@ -29,7 +29,7 @@ public class WebSecurityConfig {
                         .authenticated()
                 )
                 .formLogin(login -> login
-                        .loginPage("login.html") // TODO determine why this does not work properly
+                        .loginPage("/login").permitAll() // TODO determine why this does not work properly
                         .defaultSuccessUrl("/index")
                 )
                 .authenticationProvider(daoAuthenticationProvider());
