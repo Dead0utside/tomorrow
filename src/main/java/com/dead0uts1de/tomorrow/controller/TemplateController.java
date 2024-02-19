@@ -12,4 +12,9 @@ public class TemplateController {
     public String getLogin() {
         return "login";
     }
+
+    @GetMapping("index")
+    public String getIndex() {
+        return "index";
+    }
 }

@@ -29,7 +29,7 @@ public class RegistrationService {
         );
         String link = "http://localhost:8080/api/v1/registration/confirm?token=";
 
-        return token;
+        return "login";
     }
 
     // TODO implement email confirmation

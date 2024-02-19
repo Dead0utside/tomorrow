@@ -25,11 +25,15 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v*/registration/**")
                         .permitAll()
+                        .requestMatchers("/html/register.html")
+                        .permitAll()
+                        .requestMatchers("/js/registration-submission.js")
+                        .permitAll()
                         .anyRequest()
                         .authenticated()
                 )
                 .formLogin(login -> login
-                        .loginPage("/login").permitAll() // TODO determine why this does not work properly
+                        .loginPage("/login").permitAll()
                         .defaultSuccessUrl("/index")
                 )
                 .authenticationProvider(daoAuthenticationProvider());
