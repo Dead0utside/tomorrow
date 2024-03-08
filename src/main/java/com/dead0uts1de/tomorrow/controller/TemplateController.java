@@ -13,8 +13,18 @@ public class TemplateController {
         return "login";
     }
 
-    @GetMapping("index")
-    public String getIndex() {
-        return "index";
+    @GetMapping("register")
+    public String getRegister() {
+        return "register";
+    }
+
+//    @GetMapping("index")
+//    public String getIndex() {
+//        return "index";
+//    }
+
+    @GetMapping("home")
+    public String getHome() {
+        return "home";
     }
 }

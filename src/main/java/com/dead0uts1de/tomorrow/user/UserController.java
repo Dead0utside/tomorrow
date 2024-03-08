@@ -1,6 +1,7 @@
 package com.dead0uts1de.tomorrow.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,14 @@ public class UserController {
     @PutMapping(path = "{userId}")
     public void changeName(@PathVariable("userId") Long userId, @RequestBody String newName) { // the request body looks kinda weird now. Maybe I should just use @RequestParam instead of @RequestBody
         this.userService.changeName(userId, newName);
+    }
+
+    @GetMapping(path = "get-authorized-username")
+    public String getAuthorizedUsername() {
+        System.out.println("debug");
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println(name);
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
 //    @PutMapping(path = "{userId}")
