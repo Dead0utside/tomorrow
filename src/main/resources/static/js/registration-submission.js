@@ -4,8 +4,8 @@ window.onload=function() {
             e.preventDefault();
 
             // console.log("call");
-            var formData = new FormData(this);
-            var jsonObject = {};
+            let formData = new FormData(this);
+            let jsonObject = {};
 
             for (const [key, value] of formData.entries()) {
                 jsonObject[key] = value;

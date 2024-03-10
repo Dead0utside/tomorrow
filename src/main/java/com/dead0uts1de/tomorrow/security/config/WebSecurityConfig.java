@@ -34,7 +34,7 @@ public class WebSecurityConfig {
                 )
                 .formLogin(login -> login
                         .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/home")
+                        .defaultSuccessUrl("/home", true)
                 )
                 .authenticationProvider(daoAuthenticationProvider());
 
