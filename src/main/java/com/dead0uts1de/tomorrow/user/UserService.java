@@ -31,6 +31,10 @@ public class UserService implements UserDetailsService {
         return this.userRepository.findById(id).orElseThrow(() -> new IllegalStateException("user with id " + id + " not found")); // TODO create custom exception
     }
 
+    public User getUserByEmail(String email) {
+        return this.userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("user with this email not found"));
+    }
+
     public List<User> getUsers() {
         return this.userRepository.findAll();
     }

@@ -46,7 +46,8 @@ public class UserController {
         System.out.println("debug");
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         System.out.println(name);
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        String authorizedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userService.getUserByEmail(authorizedEmail).getName();
     }
 
 //    @PutMapping(path = "{userId}")
