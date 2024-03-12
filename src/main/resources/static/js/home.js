@@ -1,5 +1,11 @@
-const usernameString = document.querySelector('#username');
+window.onload = function () {
+    const usernameString = document.querySelector('#username');
 
-// TODO make an API request to get username via fetch()
+    let headers = new Headers();
+    headers.set('Authorization', 'Basic ' + btoa(username + ":" + password))
+    fetch('/api/v1/users/get-authorized-username', hea);
+    // TODO authorize javascript requests in SecurityConfig
 
-// usernameString.innerHTML = ('Username: ' + )
+    // usernameString.innerHTML = ('Username: ' + )
+
+}

@@ -27,16 +27,20 @@ public class WebSecurityConfig {
                         .permitAll()
                         .requestMatchers("/register/**")
                         .permitAll()
-                        .requestMatchers("/js/registration-submission.js")
-                        .permitAll()
+                        .requestMatchers("/js/**")
+                        .denyAll()
                         .anyRequest()
                         .authenticated()
                 )
                 .formLogin(login -> login
                         .loginPage("/login").permitAll()
                         .defaultSuccessUrl("/home", true)
+                        // TODO create a custom success handler that could redirect user directly to requested page instead of home
                 )
-                .authenticationProvider(daoAuthenticationProvider());
+                .authenticationProvider(daoAuthenticationProvider()
+                )
+                .httpBasic(configurer -> configurer // this will be changed down the line
+                        .init(http));
 
         return http.build();
     }
