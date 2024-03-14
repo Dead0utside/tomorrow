@@ -1,5 +1,6 @@
 package com.dead0uts1de.tomorrow.security.config;
 
+import com.dead0uts1de.tomorrow.user.UserRole;
 import com.dead0uts1de.tomorrow.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,8 +28,10 @@ public class WebSecurityConfig {
                         .permitAll()
                         .requestMatchers("/register/**")
                         .permitAll()
-                        .requestMatchers("/js/**")
-                        .denyAll()
+                        .requestMatchers("/api/v*/users/get-authorized-username/**")
+                        .permitAll()
+//                        .requestMatchers("/js/**")
+//                        .denyAll()
                         .anyRequest()
                         .authenticated()
                 )
@@ -38,9 +41,7 @@ public class WebSecurityConfig {
                         // TODO create a custom success handler that could redirect user directly to requested page instead of home
                 )
                 .authenticationProvider(daoAuthenticationProvider()
-                )
-                .httpBasic(configurer -> configurer // this will be changed down the line
-                        .init(http));
+                );
 
         return http.build();
     }

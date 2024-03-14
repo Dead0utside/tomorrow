@@ -1,11 +1,18 @@
 window.onload = function () {
     const usernameString = document.querySelector('#username');
 
-    let headers = new Headers();
-    headers.set('Authorization', 'Basic ' + btoa(username + ":" + password))
-    fetch('/api/v1/users/get-authorized-username', hea);
-    // TODO authorize javascript requests in SecurityConfig
+    const username = 'jsbot@mail.com';
+    const password = '2ma0SKDFn2as!las?snS';
 
-    // usernameString.innerHTML = ('Username: ' + )
-
+    const credentials = `${username}:${password}`;
+    const base64Credentials = btoa(credentials);
+    fetch('/api/v1/users/get-authorized-username', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/javascript',
+            'Authorization': `${base64Credentials}`,
+        },
+    }).then(response => {
+        console.log(response)
+    });
 }
