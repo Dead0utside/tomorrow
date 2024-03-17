@@ -1,4 +1,4 @@
-package com.dead0uts1de.tomorrow.registration.token;
+package com.dead0uts1de.tomorrow.authentication.token;
 
 import com.dead0uts1de.tomorrow.user.User;
 import jakarta.persistence.*;

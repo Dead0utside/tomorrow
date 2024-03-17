@@ -1,4 +1,4 @@
-package com.dead0uts1de.tomorrow.registration.token;
+package com.dead0uts1de.tomorrow.authentication.token;
 
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;

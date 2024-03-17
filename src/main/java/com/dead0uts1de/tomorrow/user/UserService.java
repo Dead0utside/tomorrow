@@ -1,11 +1,12 @@
 package com.dead0uts1de.tomorrow.user;
 
-import com.dead0uts1de.tomorrow.registration.token.ConfirmationToken;
-import com.dead0uts1de.tomorrow.registration.token.ConfirmationTokenService;
+import com.dead0uts1de.tomorrow.authentication.token.ConfirmationToken;
+import com.dead0uts1de.tomorrow.authentication.token.ConfirmationTokenService;
 import com.dead0uts1de.tomorrow.task.Task;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -39,7 +40,7 @@ public class UserService implements UserDetailsService {
         return this.userRepository.findAll();
     }
 
-    public String signUpUser(User user) {
+    public ResponseEntity<String> signUpUser(User user) {
         if (this.userRepository.findUserByEmail(user.getEmail()).isPresent()) {
             // TODO if email is not confirmed send another confirmation email
             throw new IllegalStateException("email already in use");
@@ -48,12 +49,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         this.userRepository.save(user);
 
-        ConfirmationToken confirmationToken = new ConfirmationToken(UUID.randomUUID().toString(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
-        enableUser(user.getEmail());
-        confirmationToken.setConfirmedAt(LocalDateTime.now()); // TODO remove this line when activation per email is implemented
-        confirmationTokenService.saveConfirmationToken(confirmationToken);
-
-        return confirmationToken.getToken();
+        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
     public void enableUser(String email) {

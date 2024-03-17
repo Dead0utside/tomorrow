@@ -1,4 +1,4 @@
-package com.dead0uts1de.tomorrow.registration.token;
+package com.dead0uts1de.tomorrow.authentication.token;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

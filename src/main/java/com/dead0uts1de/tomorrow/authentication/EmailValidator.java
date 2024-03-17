@@ -1,4 +1,4 @@
-package com.dead0uts1de.tomorrow.registration;
+package com.dead0uts1de.tomorrow.authentication;
 
 import org.springframework.stereotype.Service;
 
@@ -9,6 +9,7 @@ public class EmailValidator implements Predicate<String> {
 
     @Override
     public boolean test(String s) {
-        return true; // TODO create regex to check email
+        String emailRegex = "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,})+$";
+        return s.matches(emailRegex);
     }
 }

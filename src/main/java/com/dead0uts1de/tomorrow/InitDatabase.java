@@ -1,5 +1,6 @@
 package com.dead0uts1de.tomorrow;
 
+import com.dead0uts1de.tomorrow.security.PasswordEncoder;
 import com.dead0uts1de.tomorrow.task.Task;
 import com.dead0uts1de.tomorrow.task.TaskRepository;
 import com.dead0uts1de.tomorrow.user.User;
@@ -16,7 +17,7 @@ import java.util.List;
 @Configuration
 public class InitDatabase {
     @Bean
-    CommandLineRunner UserConfigurationCLR (UserRepository userRepository, TaskRepository taskRepository, UserService userService) { // this is used to automatically create a user on application startup
+    CommandLineRunner UserConfigurationCLR (UserRepository userRepository, TaskRepository taskRepository, UserService userService, PasswordEncoder passwordEncoder) { // this is used to automatically create a user on application startup
         return args -> {
             User geralt = new User("Geralt", "geralt@mail.com", "geraltpasswd", UserRole.USER);
             User lambert = new User("Lambert", "lambert@mail.com", "lambertpasswd", UserRole.USER);
@@ -26,7 +27,7 @@ public class InitDatabase {
             userService.signUpUser(lambert);
             userService.signUpUser(eskel);
 
-            User jsPseudoUser = new User("JS bot", "jsbot@mail.com", "2ma0SKDFn2as!las?snS", UserRole.MAINTENANCE);
+            User jsPseudoUser = new User("JS bot", "jsbot@mail.com", passwordEncoder.bCryptPasswordEncoder().encode("2ma0SKDFn2as!las?snS"), UserRole.MAINTENANCE);
             userRepository.save(jsPseudoUser);
 
             Task firstTask = new Task("Conquer the world", LocalDate.now().minusYears(10));
