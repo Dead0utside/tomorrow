@@ -12,17 +12,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping(path = "api/v1/authentication")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public AuthenticationController(AuthenticationService authenticationService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
 //    @PostMapping("/register")
@@ -32,11 +28,12 @@ public class AuthenticationController {
 
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody RegistrationRequest request) {
+        System.out.println("calling service register from controller");
         return authenticationService.register(request);
     }
 
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request) {
         return authenticationService.login(request);
     }
 }

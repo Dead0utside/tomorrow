@@ -1,8 +1,9 @@
 package com.dead0uts1de.tomorrow.security.config;
 
-import com.dead0uts1de.tomorrow.user.UserRole;
+import com.dead0uts1de.tomorrow.security.jwt.JWTAuthenticationFilter;
+import com.dead0uts1de.tomorrow.security.jwt.JWTGenerator;
+import com.dead0uts1de.tomorrow.security.jwt.JwtAuthEntryPoint;
 import com.dead0uts1de.tomorrow.user.UserService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,25 +13,35 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
     private final UserService userService;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtAuthEntryPoint authEntryPoint;
+    private final JWTGenerator jwtGenerator;
 
     @Autowired
-    public WebSecurityConfig(UserService userService, BCryptPasswordEncoder passwordEncoder) {
+    public WebSecurityConfig(UserService userService, JwtAuthEntryPoint authEntryPoint, JWTGenerator jwtGenerator) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
+        this.authEntryPoint = authEntryPoint;
+        this.jwtGenerator = jwtGenerator;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(authEntryPoint)
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v*/authentication/**")
                         .permitAll()
@@ -43,26 +54,21 @@ public class WebSecurityConfig {
                         .anyRequest()
                         .authenticated()
                 )
-                .formLogin(login -> login
-                        .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/home", true)
-                        // TODO create a custom success handler that could redirect user directly to requested page instead of home
-                )
-                .authenticationProvider(daoAuthenticationProvider()
+                .httpBasic(auth -> auth
+                        .authenticationEntryPoint(authEntryPoint)
                 );
 
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder);
-        provider.setUserDetailsService(userService);
-        return provider;
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter() {
+        return new JWTAuthenticationFilter(jwtGenerator, userService);
     }
 }
