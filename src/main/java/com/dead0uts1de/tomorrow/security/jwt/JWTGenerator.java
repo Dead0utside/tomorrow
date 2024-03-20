@@ -19,10 +19,10 @@ public class JWTGenerator {
         Date expirationDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
 
         String token = Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(currentDate)
-                .setExpiration(expirationDate)
-                .signWith(SecurityConstants.JWT_SECRET, SignatureAlgorithm.HS512)
+                .subject(username)
+                .issuedAt(currentDate)
+                .expiration(expirationDate)
+                .signWith(SecurityConstants.JWT_SECRET, Jwts.SIG.HS512)
                 .compact();
         System.out.println("New token :");
         System.out.println(token);
@@ -30,23 +30,23 @@ public class JWTGenerator {
     }
 
     public String getUsernameFromJWT(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(SecurityConstants.JWT_SECRET)
+        Claims claims = Jwts.parser()
+                .verifyWith(SecurityConstants.JWT_SECRET)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
         return claims.getSubject();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(SecurityConstants.JWT_SECRET)
+            Jwts.parser()
+                    .verifyWith(SecurityConstants.JWT_SECRET)
                     .build()
-                    .parseClaimsJws(token);
+                    .parseSignedClaims(token);
             return true;
         } catch (Exception ex) {
-            throw new AuthenticationCredentialsNotFoundException("JWT was exprired or incorrect",ex.fillInStackTrace());
+            throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect",ex.fillInStackTrace());
         }
     }
 }

@@ -58,7 +58,7 @@ public class AuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenGenerator.generateToken(authentication);
 
-        return new ResponseEntity<>(new AuthenticationResponse(token, "Bearer "), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthenticationResponse(token), HttpStatus.OK); // TODO the application must not expose the token in production
     }
 
     // TODO implement email confirmation
