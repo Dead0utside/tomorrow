@@ -19,7 +19,7 @@ import java.io.IOException;
 
 @Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
-    private JWTGenerator tokenGenerator;
+    private final JWTGenerator tokenGenerator;
 
     private final UserService userService;
 
