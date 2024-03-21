@@ -47,13 +47,18 @@ public class WebSecurityConfig {
                         .permitAll()
 //                        .requestMatchers("/api/v*/users/get-authorized-username/**")
 //                        .permitAll()
+                        .requestMatchers("/login")
+                        .permitAll()
+                        .requestMatchers("/register")
+                        .permitAll()
                         .requestMatchers("/js/**")
                         .denyAll()
                         .anyRequest()
                         .authenticated()
                 )
-                .httpBasic(auth -> auth
-                        .authenticationEntryPoint(authEntryPoint)
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home")
                 );
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

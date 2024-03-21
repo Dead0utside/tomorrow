@@ -9,8 +9,7 @@ window.onload = function () {
     fetch('/api/v1/users/get-authorized-username', {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/javascript',
-            'Authorization': `${base64Credentials}`,
+            'Content-Type': 'application/javascript'
         },
     }).then(response => {
         console.log(response)
