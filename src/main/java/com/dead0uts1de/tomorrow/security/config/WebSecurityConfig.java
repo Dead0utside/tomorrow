@@ -52,7 +52,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/register")
                         .permitAll()
                         .requestMatchers("/js/**")
-                        .denyAll()
+                        .permitAll()
                         .anyRequest()
                         .authenticated()
                 )
@@ -61,7 +61,7 @@ public class WebSecurityConfig {
                         .defaultSuccessUrl("/home")
                 );
 
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

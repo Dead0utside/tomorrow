@@ -11,7 +11,7 @@ window.onload=function() {
                 jsonObject[key] = value;
             }
 
-            fetch('/api/v1/registration/register', {
+            fetch('/api/v1/authentication/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body:
