@@ -43,9 +43,6 @@ public class UserController {
 
     @GetMapping(path = "get-authorized-username")
     public String getAuthorizedUsername() {
-        System.out.println("debug");
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println(name);
         String authorizedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         return userService.getUserByEmail(authorizedEmail).getName();
     }

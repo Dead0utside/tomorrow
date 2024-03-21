@@ -1,6 +1,5 @@
 package com.dead0uts1de.tomorrow.user;
 
-import com.dead0uts1de.tomorrow.authentication.token.ConfirmationToken;
 import com.dead0uts1de.tomorrow.authentication.token.ConfirmationTokenService;
 import com.dead0uts1de.tomorrow.task.Task;
 import jakarta.transaction.Transactional;
@@ -13,9 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor

@@ -1,6 +1,5 @@
 package com.dead0uts1de.tomorrow.security.jwt;
 
-import com.dead0uts1de.tomorrow.user.User;
 import com.dead0uts1de.tomorrow.user.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

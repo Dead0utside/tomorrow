@@ -3,7 +3,6 @@ package com.dead0uts1de.tomorrow.security.jwt;
 import com.dead0uts1de.tomorrow.security.config.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -24,8 +23,8 @@ public class JWTGenerator {
                 .expiration(expirationDate)
                 .signWith(SecurityConstants.JWT_SECRET, Jwts.SIG.HS512)
                 .compact();
-        System.out.println("New token :");
-        System.out.println(token);
+//        System.out.println("New token :");
+//        System.out.println(token);
         return token;
     }
 
