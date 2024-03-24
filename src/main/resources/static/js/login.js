@@ -14,8 +14,19 @@ window.onload = function () {
             headers: {'Content-Type': 'application/json'},
             body:
                 JSON.stringify(jsonObject)
-        }).then(response => {
-            // window.location.href = "/home"; // TODO response contains a freshly generated JWT token. Use it to authorize the user
         })
-    })
+            .then(response => response.json()) // TODO fix error occurring when the password is wrong
+            .then(data => {
+                const accessToken = data.accessToken;
+                const authorizationString = 'Bearer ' + accessToken;
+                console.log(authorizationString);
+                // fetch('/home', {
+                //     method: 'GET',
+                //     headers: {'Authorization': authorizationString}
+                // })
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+    });
 }

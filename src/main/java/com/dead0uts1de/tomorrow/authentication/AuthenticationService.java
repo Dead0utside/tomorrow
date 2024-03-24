@@ -58,6 +58,8 @@ public class AuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenGenerator.generateToken(authentication);
 
+        System.out.println(token);
+
         return new ResponseEntity<>(new AuthenticationResponse(token), HttpStatus.OK); // TODO the application must not expose the token in production
     }
 
