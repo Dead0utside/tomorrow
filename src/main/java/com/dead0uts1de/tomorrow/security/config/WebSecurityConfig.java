@@ -1,7 +1,7 @@
 package com.dead0uts1de.tomorrow.security.config;
 
-import com.dead0uts1de.tomorrow.security.jwt.JWTAuthenticationFilter;
-import com.dead0uts1de.tomorrow.security.jwt.JWTGenerator;
+import com.dead0uts1de.tomorrow.security.jwt.JwtAuthenticationFilter;
+import com.dead0uts1de.tomorrow.security.jwt.JwtGenerator;
 import com.dead0uts1de.tomorrow.security.jwt.JwtAuthEntryPoint;
 import com.dead0uts1de.tomorrow.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +21,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
     private final UserService userService;
     private final JwtAuthEntryPoint authEntryPoint;
-    private final JWTGenerator jwtGenerator;
+    private final JwtGenerator jwtGenerator;
 
     @Autowired
-    public WebSecurityConfig(UserService userService, JwtAuthEntryPoint authEntryPoint, JWTGenerator jwtGenerator) {
+    public WebSecurityConfig(UserService userService, JwtAuthEntryPoint authEntryPoint, JwtGenerator jwtGenerator) {
         this.userService = userService;
         this.authEntryPoint = authEntryPoint;
         this.jwtGenerator = jwtGenerator;
@@ -71,7 +71,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public JWTAuthenticationFilter jwtAuthenticationFilter() {
-        return new JWTAuthenticationFilter(jwtGenerator, userService);
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtGenerator, userService);
     }
 }

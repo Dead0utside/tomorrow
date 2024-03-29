@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class JWTGenerator {
+public class JwtGenerator {
     public String generateToken(Authentication authentication) {
         // NOTE: in context of JWT, email is considered as username
         String username = authentication.getName();

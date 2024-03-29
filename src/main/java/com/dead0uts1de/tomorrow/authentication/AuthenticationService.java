@@ -1,6 +1,6 @@
 package com.dead0uts1de.tomorrow.authentication;
 
-import com.dead0uts1de.tomorrow.security.jwt.JWTGenerator;
+import com.dead0uts1de.tomorrow.security.jwt.JwtGenerator;
 import com.dead0uts1de.tomorrow.user.User;
 import com.dead0uts1de.tomorrow.user.UserRole;
 import com.dead0uts1de.tomorrow.user.UserService;
@@ -18,13 +18,13 @@ public class AuthenticationService {
     private final UserService userService;
     private final EmailValidator emailValidator;
     private final AuthenticationManager authenticationManager;
-    private final JWTGenerator tokenGenerator;
+    private final JwtGenerator tokenGenerator;
 
 //    private final ConfirmationTokenService confirmationTokenService;
 //    private final EmailSender emailSender;
 
     @Autowired
-    public AuthenticationService(UserService userService, EmailValidator emailValidator, AuthenticationManager authenticationManager, JWTGenerator tokenGenerator) {
+    public AuthenticationService(UserService userService, EmailValidator emailValidator, AuthenticationManager authenticationManager, JwtGenerator tokenGenerator) {
         this.userService = userService;
         this.emailValidator = emailValidator;
         this.authenticationManager = authenticationManager;
