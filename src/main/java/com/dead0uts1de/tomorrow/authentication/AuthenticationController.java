@@ -12,18 +12,14 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-//    @PostMapping("/register")
-//    public String register(@RequestBody RegistrationRequest request) {
-//        return authenticationService.register(request);
-//    }
-
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody RegistrationRequest request) {
-        return authenticationService.register(request);
+        authenticationService.register(request);
+        return ResponseEntity.ok("User registered successfully");
     }
 
     @PostMapping("login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request) {
-        return authenticationService.login(request);
+        return ResponseEntity.ok(authenticationService.login(request));
     }
 }

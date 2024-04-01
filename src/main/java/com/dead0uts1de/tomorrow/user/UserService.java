@@ -19,7 +19,6 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 //    private final static String USER_NOT_FOUND_MSG = "user with this email does not exist";
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
 
 
@@ -37,16 +36,14 @@ public class UserService implements UserDetailsService {
         return this.userRepository.findAll();
     }
 
-    public ResponseEntity<String> signUpUser(User user) {
+    public void signUpUser(User user) {
         if (this.userRepository.findUserByEmail(user.getEmail()).isPresent()) {
             // TODO if email is not confirmed send another confirmation email
             throw new IllegalStateException("email already in use");
         }
+//        enableUser(user.getEmail());
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         this.userRepository.save(user);
-
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
     public void enableUser(String email) {

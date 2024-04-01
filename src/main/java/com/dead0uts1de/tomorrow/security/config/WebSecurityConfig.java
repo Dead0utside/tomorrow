@@ -1,14 +1,10 @@
 package com.dead0uts1de.tomorrow.security.config;
 
 import com.dead0uts1de.tomorrow.security.jwt.JwtAuthenticationFilter;
-import com.dead0uts1de.tomorrow.security.jwt.JwtGenerator;
-import com.dead0uts1de.tomorrow.security.jwt.JwtAuthEntryPoint;
-import com.dead0uts1de.tomorrow.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,32 +14,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
-    private final UserService userService;
-    private final JwtAuthEntryPoint authEntryPoint;
-    private final JwtGenerator jwtGenerator;
-
-    @Autowired
-    public WebSecurityConfig(UserService userService, JwtAuthEntryPoint authEntryPoint, JwtGenerator jwtGenerator) {
-        this.userService = userService;
-        this.authEntryPoint = authEntryPoint;
-        this.jwtGenerator = jwtGenerator;
-    }
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthenticationProvider authenticationProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(authEntryPoint)
-                )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v*/authentication/**")
                         .permitAll()
-                        .requestMatchers("/register/**")
+                        .requestMatchers("/register/**") // TODO review the requests; remove redundant matchers
                         .permitAll()
 //                        .requestMatchers("/api/v*/users/get-authorized-username/**")
 //                        .permitAll()
@@ -56,22 +39,17 @@ public class WebSecurityConfig {
                         .anyRequest()
                         .authenticated()
                 )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/home", true) // TODO token is generated successfully but redirection doesn't work
-                )
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                );
 
         return http.build();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtGenerator, userService);
-    }
 }
